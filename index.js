@@ -15,7 +15,8 @@ app.use((req, res, next) => {
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
-app.post(/\/chat\/completions|\/completions/, async (req, res) => {
+// 所有 POST 都当 chat 转发
+app.post('*', async (req, res) => {
   const payload = req.body || {};
   let key = DK;
   const a = req.headers.authorization || '';
@@ -56,6 +57,6 @@ app.post(/\/chat\/completions|\/completions/, async (req, res) => {
   }
 });
 
-app.use((req, res) => res.status(404).json({ error: { message: 'not found' } }));
+app.use((req, res) => res.status(404).json({ error: { message: 'no route' } }));
 
 module.exports = app;
